@@ -8,7 +8,7 @@ import Navbar from './Navbar';
 
     return (
    
-        <header className="">
+        <header >
         <Navbar/>
         </header>
   

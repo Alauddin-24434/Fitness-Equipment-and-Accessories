@@ -1,8 +1,8 @@
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Products', href: '/productsPage' },
-  { name: 'Product Details', href: '/productDetailsPage' },
+  { name: 'Products', href: '/products' },
+  { name: 'Product Details', href: '/productDetails' },
   { name: 'Product Management', href: '/productManagement' },
   { name: 'Cart', href: '/cartPage' },
   { name: 'Checkout', href: '/checkoutpage' },
@@ -15,12 +15,12 @@ const Navbar = () => {
 
   return (
 
-    <div>
+    <div className="">
       {/* header 1 */}
       <header className="lg:pb-0 bg-gray-900 border-b border-gray-800">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {/* <!-- lg+ --> */}
-                    <nav className="flex items-center justify-between h-16 lg:h-20">
+                    <nav className="flex items-center justify-between h-16 lg:h-20 ">
                         <div className="flex-shrink-0">
                             <a href="#" title="" className="flex">
                                 <img className="w-auto h-10" src="/src/assets/images/logo.svg" alt="" />

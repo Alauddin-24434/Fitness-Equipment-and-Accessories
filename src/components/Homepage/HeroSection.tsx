@@ -3,7 +3,7 @@
 
 const HeroSection = () => {
     return (
-      <section>
+      <section className="">
   
   
       <div  className="relative py-12 bg-white sm:py-16 lg:py-20  xl:pt-32 xl:pb-44">
