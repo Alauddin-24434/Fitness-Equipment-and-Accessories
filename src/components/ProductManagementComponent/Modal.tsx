@@ -1,56 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ChangeEvent, FormEvent, useState } from "react";
-import axios from "axios";
-import { useAddProductMutation } from "../../redux/api/api";
+import { FormEvent, useState } from "react";
+import { useAddProductMutation } from "../../redux/features/product/product";
+
+
 
 
 const Modal = ({ setIsFormOpen }: any) => {
-    const [addProduct, {error, isLoading,data, isError, isSuccess }] = useAddProductMutation();
+    const [addProduct, {error,data, isError, isSuccess }] = useAddProductMutation();
 console.log({isError,data,isSuccess,error})
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [uploading, setUploading] = useState(false);
+  const [images, setImages] = useState('')
 
-  const imgbbApiKey = "f1fd4dec34482fd48b08283ad2f27dd2";
 
-  const uploadImage = async (image: File) => {
-    const formData = new FormData();
-    formData.append('image', image);
-
-    try {
-      setUploading(true);
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, formData);
-      setUploading(false);
-      return response.data.data.url;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      setUploading(false);
-      return null;
-    }
-  };
-
-  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-
-      const urls = await Promise.all(files.map(file => uploadImage(file)));
-      setImageUrls(urls.filter(url => url !== null) as string[]);
-    }
-  };
 
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    if (imageUrls.length === 0) {
-      console.error("No images uploaded");
-      return;
-    }
 
     const productData = {
       name,
@@ -58,14 +28,10 @@ console.log({isError,data,isSuccess,error})
       description,
       price,
       stock,
-      images: imageUrls,
+      images
     };
 
     await addProduct(productData);
-
-   
-
-    // setIsFormOpen(false);
   };
 
   const handleModalClose = () => {
@@ -77,7 +43,7 @@ console.log({isError,data,isSuccess,error})
       <div className="py-12 bg-gray-700 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
         <div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-lg">
           <div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
-            <h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Enter Product Details</h1>
+            <h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Add Product Details</h1>
 
             <label htmlFor="name" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Product Name</label>
             <input
@@ -98,45 +64,38 @@ console.log({isError,data,isSuccess,error})
               className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
               placeholder="Enter Product Description"
             />
+  
 
-            <label htmlFor="category" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Categories</label>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-            >
-              <option label="">-- Select a Category --</option>
-              <option value="denmark">Denmark</option>
-              <option value="sweden">Sweden</option>
-              <option value="norway">Norway</option>
-            </select>
+     
 
-            <label htmlFor="images" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Images</label>
-            <input
-              type='file'
-              id="images"
-              multiple
-              onChange={handleImageChange}
-              className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-            />
+ <div className="flex justify-between gap-2">
+ <div>
+  
+ <label htmlFor="category" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Categories</label>
+<select
+    id="category"
+    value={category}
+    onChange={(e) => setCategory(e.target.value)}
+    className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+>
+    <option label="">Select Category</option>
+    <option value="strength-training">Strength Training</option>
+    <option value="cardio-equipment">Cardio Equipment</option>
+    <option value="flexibility-balance">Flexibility & Balance</option>
+    <option value="functional-training">Functional Training</option>
+    <option value="bodyweight-training">Bodyweight Training</option>
+    <option value="crossfit-hiit">CrossFit & HIIT</option>
+    <option value="recovery-mobility">Recovery & Mobility</option>
+    <option value="wearables-trackers">Wearables & Trackers</option>
+    <option value="home-gym-essentials">Home Gym Essentials</option>
+    <option value="accessories">Accessories</option>
+    <option value="outdoor-fitness">Outdoor Fitness</option>
+</select>
 
-            {uploading && <p>Uploading...</p>}
-
-            {imageUrls.length > 0 && (
-              <div className="mb-5">
-                <h2 className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Uploaded Images:</h2>
-                <ul className="flex flex-grow">
-                  {imageUrls.map((url, index) => (
-                    <li key={index}>
-                      <img src={url} alt={`Uploaded ${index}`} className="w-16 h-16 mb-2" />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-           
+  
+  </div>
+              
+ <div>
 <label htmlFor="price" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Price </label>
             <input
               type='number'
@@ -147,7 +106,9 @@ console.log({isError,data,isSuccess,error})
               placeholder="Enter price"
             />
 
-            <label htmlFor="stock" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Stock Quantity</label>
+</div>
+           <div>
+           <label htmlFor="stock" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Stock Quantity</label>
             <input
               type='number'
               id="stock"
@@ -155,6 +116,17 @@ console.log({isError,data,isSuccess,error})
               onChange={(e) => setStock(Number(e.target.value))}
               className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
               placeholder="Enter quantity"
+            />
+           </div>
+ </div>
+            <label htmlFor="images" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">image</label>
+            <input
+              type='url'
+              id="images"
+              value={images}
+              onChange={(e) => setImages(e.target.value)}
+              className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+              placeholder="Enter image url link"
             />
 
 

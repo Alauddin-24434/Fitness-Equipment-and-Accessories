@@ -4,7 +4,7 @@ const navigation = [
   { name: 'Products', href: '/products' },
   { name: 'Product Details', href: '/productDetails' },
   { name: 'Product Management', href: '/productManagement' },
-  { name: 'Cart', href: '/cartPage' },
+  { name: 'Cart', href: '/cart' },
   { name: 'Checkout', href: '/checkoutpage' },
   { name: 'About Us', href: '/aboutUsPage' },
 ];

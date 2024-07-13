@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Container from '../../components/Container/Container';
 import ProductCard from '../../components/Products/ProductCard';
-import { useGetProductsQuery } from '../../redux/api/api';
+import { useGetProductsQuery } from '../../redux/features/product/product';
 
 const Products = () => {
     const { data, error,isLoading } = useGetProductsQuery(undefined);

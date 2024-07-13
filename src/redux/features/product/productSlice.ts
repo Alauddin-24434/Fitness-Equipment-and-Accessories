@@ -30,6 +30,7 @@ addProduct:(state, action:PayloadAction<TProduct>)=>{
   state.products.push({...action.payload})
 
 },
+
     },
 
 })

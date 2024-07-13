@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useDeleteProductMutation, useGetProductsQuery } from "../../redux/api/api";
+
 
 import Modal from "./Modal";
+import { useDeleteProductMutation, useGetProductsQuery } from "../../redux/features/product/product";
 
 export type TProduct = {
   _id: string;

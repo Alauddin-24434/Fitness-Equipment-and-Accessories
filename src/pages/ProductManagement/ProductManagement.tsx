@@ -1,9 +1,6 @@
 
 import ProductList from '../../components/ProductManagementComponent/ProductList';
-
-
 const ProductManagement = () => {
-
 
   return (
    
