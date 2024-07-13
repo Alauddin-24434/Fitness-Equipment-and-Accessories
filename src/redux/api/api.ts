@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
@@ -6,12 +7,14 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://fitness-equipment-and-accessories-backend-six.vercel.app/api",
   }),
+  tagTypes:['product'],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => ({
         url: "/products",
         method: "GET",
       }),
+      providesTags:['product'],
     }),
     getProductById: builder.query({
       query: (id) => ({
@@ -25,6 +28,7 @@ export const baseApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags:['product']
     }),
     updateProduct: builder.mutation({
       query: ({ id, ...data }) => ({
@@ -38,6 +42,7 @@ export const baseApi = createApi({
         url: `/products/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags:['product']
     }),
   }),
 });
@@ -48,4 +53,4 @@ export const {
   useAddProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-} = baseApi;
+}:any = baseApi;

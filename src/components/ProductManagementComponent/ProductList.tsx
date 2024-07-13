@@ -3,31 +3,29 @@ import { useDeleteProductMutation, useGetProductsQuery } from "../../redux/api/a
 
 import Modal from "./Modal";
 
-export type TProduct={
-  _id:string,
-  name:string;
-  price:number;
-  description:string;
+export type TProduct = {
+  _id: string;
+  name: string;
+  price: number;
+  description: string;
   images: string[];
-  category:string;
-  stock:'inStock' | 'out of stock';
+  category: string;
+  stock: 'inStock' | 'out of stock';
   isDeleted: boolean;
-}
+};
 
 const ProductList = () => {
-  const { data ,error, isLoading } = useGetProductsQuery(undefined);
+  const { data, error, isLoading } = useGetProductsQuery(undefined);
   const [deleteProduct] = useDeleteProductMutation();
 
-  const [isFormOpen, setIsFormOpen]= useState<boolean>(false);
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
-  const handleDelete = async (id:string) => {
-    console.log(id)
+  const handleDelete = async (id: string) => {
+    console.log(id);
     if (window.confirm("Are you sure you want to delete this product?")) {
       await deleteProduct(id);
     }
   };
-
-
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading products</div>;
@@ -37,7 +35,6 @@ const ProductList = () => {
       <button
         className="bg-green-500 text-white p-2 mb-4"
         onClick={() => {
-         
           setIsFormOpen(true);
         }}
       >
@@ -46,23 +43,22 @@ const ProductList = () => {
       <table className="min-w-full bg-white">
         <thead>
           <tr>
-            <th className="py-2">Name</th>
-            <th className="py-2">Price</th>
-            <th className="py-2">Category</th>
-            <th className="py-2">Actions</th>
+            <th className="py-2 text-center">Name</th>
+            <th className="py-2 text-center">Price</th>
+            <th className="py-2 text-center">Category</th>
+            <th className="py-2 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {data?.data?.map((product:TProduct) => (
+          {data?.data?.map((product: TProduct) => (
             <tr key={product._id}>
-              <td className="border px-4 py-2">{product.name}</td>
-              <td className="border px-4 py-2">${product.price}</td>
-              <td className="border px-4 py-2">{product.category}</td>
-              <td className="border px-4 py-2">
+              <td className="border px-4 py-2 text-center">{product.name}</td>
+              <td className="border px-4 py-2 text-center">${product.price}</td>
+              <td className="border px-4 py-2 text-center">{product.category}</td>
+              <td className="border px-4 py-2 text-center">
                 <button
                   className="bg-blue-500 text-white p-2 mr-2"
                   onClick={() => {
-                  
                     setIsFormOpen(true);
                   }}
                 >
@@ -81,8 +77,7 @@ const ProductList = () => {
       </table>
       {isFormOpen && (
         <Modal
-        setIsFormOpen={setIsFormOpen}
-       
+          setIsFormOpen={setIsFormOpen}
         />
       )}
     </div>
