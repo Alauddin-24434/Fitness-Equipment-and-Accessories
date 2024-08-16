@@ -1,40 +1,54 @@
 import { useState } from "react";
 
-
-import Modal from "./Modal";
+import UpdateModal from "./UpdateModal"; // Import the UpdateModal component
 import { useDeleteProductMutation, useGetProductsQuery } from "../../redux/features/product/product";
-
-export type TProduct = {
-  _id: string;
-  name: string;
-  price: number;
-  description: string;
-  images: string[];
-  category: string;
-  stock: 'inStock' | 'out of stock';
-  isDeleted: boolean;
-};
+import { FaSpinner } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { TProduct } from "../Products/ProductCard";
+import Modal from "./AddProductModal";
 
 const ProductList = () => {
-  const { data, error, isLoading } = useGetProductsQuery(undefined);
+  const { data, error, isLoading, refetch } = useGetProductsQuery(undefined);
   const [deleteProduct] = useDeleteProductMutation();
 
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<TProduct | null>(null);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false); // State to manage deletion loading
 
   const handleDelete = async (id: string) => {
-    console.log(id);
-    if (window.confirm("Are you sure you want to delete this product?")) {
+    setIsDeleting(true); // Set loading state
+
+    try {
       await deleteProduct(id);
+      // If successful, refetch products to update the list
+      refetch();
+      toast.success("Product successfully deleted"); // Show success toast
+    } catch (error) {
+      console.error("Failed to delete product:", error);
+      toast.error("Failed to delete product");
+      // Handle error
+    } finally {
+      setIsDeleting(false); // Reset loading state
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  const handleUpdateModalOpen = (product: TProduct) => {
+    setSelectedProduct(product);
+    setIsUpdateModalOpen(true);
+  };
+
+
+
+  if (isLoading) return <div className="flex justify-center items-center "><FaSpinner className="animate-spin mr-2 min-h-screen text-lg md:text-2xl lg:text-6xl text-green-600 " /></div>;
   if (error) return <div>Error loading products</div>;
 
   return (
     <div>
+      <ToastContainer /> {/* ToastContainer for displaying toast messages */}
       <button
-        className="bg-green-500 text-white p-2 mb-4"
+        className="bg-green-600 rounded-md float-right my-2 mx-2 hover:bg-green-700 text-white p-2 mb-4"
         onClick={() => {
           setIsFormOpen(true);
         }}
@@ -59,26 +73,29 @@ const ProductList = () => {
               <td className="border px-4 py-2 text-center">
                 <button
                   className="bg-blue-500 text-white p-2 mr-2"
-                  onClick={() => {
-                    setIsFormOpen(true);
-                  }}
+                  onClick={() => handleUpdateModalOpen(product)}
                 >
                   Update
                 </button>
                 <button
                   className="bg-red-500 text-white p-2"
                   onClick={() => handleDelete(product._id)}
+                  disabled={isDeleting} // Disable button while deletion is in progress
                 >
-                  Delete
+                  {isDeleting ? "Deleting..." : "Delete"}
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {isFormOpen && (
-        <Modal
-          setIsFormOpen={setIsFormOpen}
+      {isFormOpen && <Modal setIsFormOpen={setIsFormOpen} />}
+      {isUpdateModalOpen && (
+        <UpdateModal
+          setIsUpdateModalOpen={setIsUpdateModalOpen}
+          initialProduct={selectedProduct as TProduct}
+          isUpdateMode={true}
+          refetchProducts={refetch}
         />
       )}
     </div>

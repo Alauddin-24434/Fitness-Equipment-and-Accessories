@@ -65,6 +65,6 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://fitness-equipment-and-accessories-backend-six.vercel.app/api",
   }),
-  tagTypes: ['Product','Auth'], // Tag type for products
+  tagTypes: ['Product','Auth','Cart'], // Tag type for products
   endpoints: () => ({}), // No endpoints defined in baseApi
 });
