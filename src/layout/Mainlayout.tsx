@@ -8,10 +8,12 @@ const Mainlayout = () => {
           
 
             <HeaderSection />
-            <Outlet />
-            <div>
+      <div className="min-h-screen">
+      <Outlet />
+      </div>
+            <div >
                  {/* Footer */}
-      <footer className="py-8 bg-gray-800 text-white">
+      <footer className="py-8  bg-gray-800 text-white">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-6">
             <div>

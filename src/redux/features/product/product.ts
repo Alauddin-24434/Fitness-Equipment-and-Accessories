@@ -5,10 +5,17 @@ const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => ({
-        url: "/products",
+        url: `/products`,
         method: "GET",
       }),
       providesTags: ["Product"], // Tag products data with 'Product' tag
+    }),
+
+    getCategories:builder.query({
+      query:(query)=>({
+        url: `/products?category=${query}`,
+        method: "GET",
+      })
     }),
     getProductById: builder.query({
       query: (id) => ({
@@ -46,7 +53,7 @@ export const {
   useAddProductMutation,
   useDeleteProductMutation,
   useGetProductByIdQuery,
-  useLazyGetProductByIdQuery,
   useGetProductsQuery,
-  useUpdateProductMutation
-}:any = productApi;
+useGetCategoriesQuery,
+useUpdateProductMutation,
+}:any= productApi;

@@ -7,6 +7,10 @@ import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import CartPage from "../pages/CartPage/CartPage";
 import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
 import AboutUsPage from "../pages/AboutUs/AboutUsPage";
+import Login from "../pages/Login/Login";
+import SignUp from "../pages/SignUp/SignUp";
+import PrivateRoute from "./protectedRoutes";
+import Categories from "../components/Category/Categories";
 
 
 
@@ -28,26 +32,41 @@ const router = createBrowserRouter([
             element: <Products/>
         },
         {
+            path: "/categories/:query",
+            element: <Categories/>
+        },
+        {
             path: "/productDetails/:id",
-            element: <ProductDetails/>
+            element: <PrivateRoute><ProductDetails/></PrivateRoute>
         },
        
         {
             path: "/cart",
-            element: <CartPage/>
+            element:<CartPage/>
         },
         {
             path: "/checkoutpage",
-            element: <CheckoutPage/>
+            element:<PrivateRoute><CheckoutPage/></PrivateRoute>
         },
        
         {
-            path: "/aboutUsPage",
+            path: "/aboutUs",
             element: <AboutUsPage/>
+        },
+        {
+            path: "/login",
+            element: <Login/>
+        },
+        {
+            path: "/signUp",
+            element: <SignUp/>
         },
        
     ]
+    
+
 }
+
 ])
 
 export default router;
