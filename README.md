@@ -52,9 +52,6 @@
 - Fully responsive design optimized for mobile, tablet, and desktop devices.
 - Tailored experience for different screen sizes.
 
-### 13. **Multi-Language and Multi-Currency**
-- Supports various languages and currencies to cater to international users.
-
 ## Technologies Used
 
 - **Frontend:** React, Redux, TypeScript, CSS (TailwindCSS/Bootstrap)
