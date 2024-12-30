@@ -1,5 +1,3 @@
-
-Explore each feature and technology to understand how they contribute to the application's functionality and performance.
 # Fitness Equipment Platform
 
 **Fitness Equipment** is an online platform where users can explore and purchase a variety of fitness equipment. With a user-friendly interface built using **React**, **Redux**, and **TypeScript** on the frontend, and **Node.js**, **Express**, and **MongoDB** on the backend, users can easily browse products, view detailed descriptions, and make secure purchases.
